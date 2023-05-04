@@ -9,7 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.example.lista.listener.RecycleItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +47,37 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         recyclerView.setAdapter(adapter);
+
+        //evento de click
+        recyclerView.addOnItemTouchListener(
+                new RecycleItemClickListener(
+                        getApplicationContext(),
+                        recyclerView,
+                        new RecycleItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                                Filme filme = filmeList.get(position);
+                                Toast.makeText(getApplicationContext(), "Click: " + filme.getTituloFilme(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                Filme filme = filmeList.get(position);
+                                Toast.makeText(getApplicationContext(), "Click longo: " + filme.getTituloFilme(), Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                            }
+                        }
+                )
+        );
     }
+
+
+
     public void criarFilmes(){
 
         Filme filme = new Filme("Policiais em apuros", "Comédia", "2000");
